@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32516.85
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DartsApp.RestAPI", "DartsApp.RestAPI\DartsApp.RestAPI.csproj", "{5DA748BB-5F96-4E20-9CC6-E2C1FD708D55}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5DA748BB-5F96-4E20-9CC6-E2C1FD708D55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DA748BB-5F96-4E20-9CC6-E2C1FD708D55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DA748BB-5F96-4E20-9CC6-E2C1FD708D55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DA748BB-5F96-4E20-9CC6-E2C1FD708D55}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BC005F71-707B-44C3-9F71-006BBC75E9CF}
+	EndGlobalSection
+EndGlobal
