@@ -19,6 +19,8 @@ namespace DartsApp.RestAPI.AutoMapper
         {
             CreateMap<BoardDto, Board>();
             CreateMap<Board, BoardDto>();
+
+            CreateMap<Board, BoardViewDto>();
         }
 
         private void PlaceMapping()
