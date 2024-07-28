@@ -5,6 +5,7 @@ using DartsApp.RestAPI.Repositories.Interfaces;
 using DartsApp.RestAPI.Repositories.Infrastructure;
 using DartsApp.RestAPI.Servicies.Infrastructure;
 using DartsApp.RestAPI.Servicies.Interfaces;
+using DartsApp.RestAPI.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,23 +17,7 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-//Added repositories
-builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-
-builder.Services.AddScoped<IBoardRepository, BoardRepository>();
-builder.Services.AddScoped<IPlaceRepository, PlaceRepository>();
-builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
-builder.Services.AddScoped<ITournamentRepository, TournamentRepository>();
-
-//Added services
-
-builder.Services.AddScoped(typeof(IService<,>), typeof(Service<,>));
-
-builder.Services.AddScoped<IBoardService, BoardService>();
-builder.Services.AddScoped<IPlaceService, PlaceService>();
-builder.Services.AddScoped<IPlayerService, PlayerService>();
-builder.Services.AddScoped<ITournamentService, TournamentService>();
-
+DependencyInjectionExtension.AddDepencyInjection(builder.Services);
 
 // Add services to the container.
 
