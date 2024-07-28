@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DartsApp.RestAPI.Repositories.Infrastructure
 {
-    public class PlaceRepository : Repository<Place>, IPlaceRepository
+    public class PlaceRepository : BaseRepository<Place>, IPlaceRepository
     {
 
         public PlaceRepository(ApplicationDbContext dbContext) : base(dbContext)

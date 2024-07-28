@@ -6,9 +6,9 @@ using DartsApp.RestAPI.Servicies.Interfaces;
 
 namespace DartsApp.RestAPI.Servicies.Infrastructure
 {
-    public class PlayerService : Service<PlayerCreateDto, Player>, IPlayerService
+    public class PlayerService : BaseService<PlayerCreateDto, Player>, IPlayerService
     {
-        public PlayerService(IRepository<Player> repository, IMapper mapper) : base(repository, mapper)
+        public PlayerService(IBaseRepository<Player> repository, IMapper mapper) : base(repository, mapper)
         {
         }
     }

@@ -2,7 +2,7 @@
 
 namespace DartsApp.RestAPI.Repositories.Interfaces
 {
-    public interface IPlayerRepository: IRepository<Player>
+    public interface IPlayerRepository: IBaseRepository<Player>
     {
     }
 }

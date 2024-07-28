@@ -6,9 +6,9 @@ using DartsApp.RestAPI.Servicies.Interfaces;
 
 namespace DartsApp.RestAPI.Servicies.Infrastructure
 {
-    public class TournamentService : Service<TournamentCreateDto, Tournament>, ITournamentService
+    public class TournamentService : BaseService<TournamentCreateDto, Tournament>, ITournamentService
     {
-        public TournamentService(IRepository<Tournament> repository, IMapper mapper) : base(repository, mapper)
+        public TournamentService(IBaseRepository<Tournament> repository, IMapper mapper) : base(repository, mapper)
         {
         }
     }

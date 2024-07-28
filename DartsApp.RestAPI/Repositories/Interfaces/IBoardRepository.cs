@@ -2,7 +2,7 @@
 
 namespace DartsApp.RestAPI.Repositories.Interfaces
 {
-    public interface IBoardRepository: IRepository<Board>
+    public interface IBoardRepository: IBaseRepository<Board>
     {
         
     }

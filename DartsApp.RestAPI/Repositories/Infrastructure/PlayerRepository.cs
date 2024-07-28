@@ -4,7 +4,7 @@ using DartsApp.RestAPI.Repositories.Interfaces;
 
 namespace DartsApp.RestAPI.Repositories.Infrastructure
 {
-    public class PlayerRepository : Repository<Player>, IPlayerRepository
+    public class PlayerRepository : BaseRepository<Player>, IPlayerRepository
     {
         public PlayerRepository(ApplicationDbContext dbContext) : base(dbContext)
         {

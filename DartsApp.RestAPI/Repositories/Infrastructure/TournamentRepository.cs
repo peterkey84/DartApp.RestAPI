@@ -4,7 +4,7 @@ using DartsApp.RestAPI.Repositories.Interfaces;
 
 namespace DartsApp.RestAPI.Repositories.Infrastructure
 {
-    public class TournamentRepository : Repository<Tournament>, ITournamentRepository
+    public class TournamentRepository : BaseRepository<Tournament>, ITournamentRepository
     {
         public TournamentRepository(ApplicationDbContext dbContext) : base(dbContext)
         {

@@ -6,19 +6,30 @@ using DartsApp.RestAPI.Servicies.Interfaces;
 
 namespace DartsApp.RestAPI.Servicies.Infrastructure
 {
-    public class BoardService : Service<BoardDto, Board>, IBoardService
+    public class BoardService : BaseService<BoardDto, Board>, IBoardService
     {
-
         private readonly IMapper _mapper;
-        private readonly IRepository<Board> _repository;
+        private readonly IBoardRepository _boardRepository;
         private readonly ITournamentRepository _tournamentRepository;
 
-        public BoardService(IRepository<Board> repository, IMapper mapper, ITournamentRepository tournamentRepository) : base(repository, mapper)
+        public BoardService(IBoardRepository boardRepository, IMapper mapper, ITournamentRepository tournamentRepository) : base(boardRepository, mapper)
         {
             _mapper = mapper;
-            _repository = repository;
+            _boardRepository = boardRepository;
             _tournamentRepository = tournamentRepository;
         }
+
+
+
+        public async Task<IEnumerable<BoardViewDto>> GetAllAsync()
+        {
+            var boards = await _boardRepository.GetAllAsync();
+
+            var boardsViewDto = _mapper.Map<IEnumerable<BoardViewDto>>(boards);
+
+            return boardsViewDto;
+        }
+
 
         public async Task AddAsync(BoardDto boardDto)
         {
@@ -30,18 +41,16 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
             {
                 throw new Exception("Invalid TournamentId");
             }
-            else
-            {
-                await _repository.AddAsync(board);
-
-            }
+            
+            _mapper.Map<BoardViewDto>(_boardRepository.AddAsync(board));
 
         }
 
 
+
         public async Task UpdateAsync(int id, BoardDto boardDto)
         {
-            var existingBoard = await _repository.GetByIdAsync(id);
+            var existingBoard = await _boardRepository.GetByIdAsync(id);
 
             if(existingBoard == null)
             {
@@ -86,10 +95,11 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
 
             if (hasChanges)
             {
-                await _repository.UpdateAsync(existingBoard);
+                await _boardRepository.UpdateAsync(existingBoard);
 
             }
 
         }
+
     }
 }

@@ -4,23 +4,39 @@ using DartsApp.RestAPI.Servicies.Interfaces;
 
 namespace DartsApp.RestAPI.Servicies.Infrastructure
 {
-    public class Service<TDto, TEntity> : IService<TDto, TEntity> where TDto : class where TEntity : class
+    public class BaseService<TDto, TEntity> : IBaseService<TDto, TEntity> where TDto : class where TEntity : class
     {
 
-        private readonly IRepository<TEntity> _repository;
+        private readonly IBaseRepository<TEntity> _repository;
         private readonly IMapper _mapper;
 
-        public Service(IRepository<TEntity> repository, IMapper mapper)
+        public BaseService(IBaseRepository<TEntity> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
+        }
+
+
+        public virtual async Task<IEnumerable<TDto>> GetAllAsync()
+        {
+            var entity = await _repository.GetAllAsync();
+
+            var dtoObject = _mapper.Map<IEnumerable<TDto>>(entity);
+
+            return dtoObject.ToList();
+        }
+
+        public async Task<TDto> GetByIdAsync(int id)
+        {
+            var objectId = await _repository.GetByIdAsync(id);
+
+            return _mapper.Map<TDto>(objectId);
         }
 
         public async Task AddAsync(TDto dto)
         {
 
             var addObject = _mapper.Map<TEntity>(dto);
-            ;
             await _repository.AddAsync(addObject);
 
         }
@@ -35,18 +51,7 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
             }    
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync()
-        {
 
-            return await _repository.GetAllAsync();
-        }
-
-        public async Task<TDto> GetByIdAsync(int id)
-        {
-            var objectId = await _repository.GetByIdAsync(id);
-
-            return _mapper.Map<TDto>(objectId);
-        }
 
         public async Task UpdateAsync(int id, TDto dto)
         {

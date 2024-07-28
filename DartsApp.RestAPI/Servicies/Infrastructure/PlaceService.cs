@@ -8,15 +8,15 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
 
 
 {
-    public class PlaceService : Service<PlaceCreateDto, Place>, IPlaceService
+    public class PlaceService : BaseService<PlaceCreateDto, Place>, IPlaceService
     {
 
         private readonly IMapper _mapper;
-        private readonly IRepository<Place> _repository;
+        private readonly IPlaceRepository _placeRepository;
 
-        public PlaceService(IRepository<Place> repository, IMapper mapper) : base(repository, mapper)
+        public PlaceService(IPlaceRepository placeRepository, IMapper mapper) : base(placeRepository, mapper)
         {
-            _repository = repository;
+            _placeRepository = placeRepository;
             _mapper = mapper;
         }
 
@@ -24,12 +24,12 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
         {
             var place = _mapper.Map<Place>(placeDto);
 
-            await _repository.AddAsync(place);
+            await _placeRepository.AddAsync(place);
         }
 
         public async Task UpdateAsync(int id, PlaceCreateDto placeDto)
         {
-            var existingPlace = await _repository.GetByIdAsync(id);
+            var existingPlace = await _placeRepository.GetByIdAsync(id);
 
             if(existingPlace == null)
             {
@@ -57,7 +57,7 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
                 hasChanges = true;
             }
 
-            await _repository.UpdateAsync(existingPlace);
+            await _placeRepository.UpdateAsync(existingPlace);
         }
     }
 }

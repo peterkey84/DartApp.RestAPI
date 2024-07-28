@@ -2,7 +2,7 @@
 
 namespace DartsApp.RestAPI.Repositories.Interfaces
 {
-    public interface ITournamentRepository: IRepository<Tournament>
+    public interface ITournamentRepository: IBaseRepository<Tournament>
     {
     }
 }

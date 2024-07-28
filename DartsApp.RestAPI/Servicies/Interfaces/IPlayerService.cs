@@ -3,7 +3,7 @@ using DartsApp.RestAPI.Entities;
 
 namespace DartsApp.RestAPI.Servicies.Interfaces
 {
-    public interface IPlayerService: IService<PlayerCreateDto, Player>
+    public interface IPlayerService: IBaseService<PlayerCreateDto, Player>
     {
     }
 }

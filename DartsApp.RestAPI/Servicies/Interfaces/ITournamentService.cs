@@ -3,7 +3,7 @@ using DartsApp.RestAPI.Entities;
 
 namespace DartsApp.RestAPI.Servicies.Interfaces
 {
-    public interface ITournamentService: IService<TournamentCreateDto, Tournament>
+    public interface ITournamentService: IBaseService<TournamentCreateDto, Tournament>
     {
     }
 }

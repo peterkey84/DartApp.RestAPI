@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DartsApp.RestAPI.Repositories.Infrastructure
 {
-    public class Repository<T> : IRepository<T> where T : class
+    public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly DbSet<T> _dbSet;
 
-        public Repository(ApplicationDbContext dbContext)
+        public BaseRepository(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
             _dbSet = dbContext.Set<T>();
@@ -28,7 +28,7 @@ namespace DartsApp.RestAPI.Repositories.Infrastructure
 
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public virtual async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _dbSet.ToListAsync();
         }
