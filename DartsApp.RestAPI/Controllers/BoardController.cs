@@ -20,39 +20,34 @@ namespace DartsApp.RestAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllBoards()
+        public async Task<IEnumerable<BoardViewDto>> GetAllBoards()
         {
 
             var boards = await _boardService.GetAllAsync();
-
-            return Ok(boards);
+            return boards;
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetBoardById(int id)
+        public async Task<BoardDto> GetBoardById(int id)
         {
             var board = await _boardService.GetByIdAsync(id);
 
-            if(board == null)
-            {
-                return NotFound();
-            }
+            return board;
+      
 
-            return Ok(board);
         }
 
         [HttpPost]
-        public async Task<ActionResult<BoardDto>> AddNewBoard(BoardDto boardDto)
+        public async Task AddNewBoard(BoardDto boardDto)
         {
 
             await _boardService.AddAsync(boardDto);
-
-            return CreatedAtAction(nameof(GetBoardById), new {id = boardDto.Id}, boardDto);
+            
         }
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateBoardById(int id, BoardDto boardDto)
+        public async Task UpdateBoardById(int id, BoardDto boardDto)
         {
 
             var board = await _boardService.GetByIdAsync(id);
@@ -61,18 +56,14 @@ namespace DartsApp.RestAPI.Controllers
             {
                 await _boardService.UpdateAsync(id, boardDto);
 
-                return Ok();
-            }
-            
-            return NotFound("Invalide Board");
+            }          
         }
 
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBoardById(int id)
+        public async Task DeleteBoardById(int id)
         {
             await _boardService.DeleteAsync(id);
-            return Ok();
         }
 
 
