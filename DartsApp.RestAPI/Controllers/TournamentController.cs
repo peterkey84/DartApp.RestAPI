@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
+using DartsApp.RestAPI.DTOs;
+using DartsApp.RestAPI.Servicies.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace DartsApp.RestAPI.Controllers
 {
@@ -10,40 +13,59 @@ namespace DartsApp.RestAPI.Controllers
     {
 
         private readonly IMapper _mapper;
+        private readonly ITournamentService _tournamentService;
 
-        public TournamentController(IMapper mapper)
+        public TournamentController(IMapper mapper, ITournamentService tournamentService)
         {
             _mapper = mapper;
+            _tournamentService = tournamentService;
         }
         [HttpGet]
-        public async Task<IActionResult> GetAllTournaments()
+        public async Task<IEnumerable<TournamentViewDto>> GetAllTournaments()
         {
 
-            return Ok();
+            IEnumerable<TournamentViewDto> tournaments = await _tournamentService.GetAllAsync();
+
+            return tournaments;
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetTournamentById()
+        public async Task<TournamentCreateDto> GetTournamentById(int id)
         {
-            return Ok();
+
+            var tournament = await _tournamentService.GetByIdAsync(id);
+
+            return tournament;
+
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddNewTournament()
+        public async Task AddNewTournament(TournamentCreateDto tournamentCreateDto)
         {
-            return Ok();
+            await _tournamentService.AddAsync(tournamentCreateDto);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateTournamentById()
+        [HttpPut("{id}")]
+        public async Task UpdateTournamentById(TournamentCreateDto tournament, int id)
         {
-            return Ok();
+            await _tournamentService.UpdateAsync(id, tournament);
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteTournamentById()
+        [HttpDelete("{id}")]
+        public async Task DeleteTournamentById(int id)
         {
-            return Ok();
+           await _tournamentService.DeleteAsync(id);
         }
+
+
+        [HttpGet("tournaments/locatad-in-the-{city}")]
+        public async Task<IEnumerable<TournamentMatchedDto>> GetMatchedCities(string city)
+        {
+            var tournaments = await _tournamentService.GetMatchedCities(city);
+
+            return tournaments;
+
+        }
+
     }
 }

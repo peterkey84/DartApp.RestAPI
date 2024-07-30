@@ -5,6 +5,6 @@ namespace DartsApp.RestAPI.Servicies.Interfaces
 {
     public interface IBoardService : IBaseService<BoardDto, Board>
     {
-        Task<IEnumerable<BoardViewDto>> GetAllAsync();
+      new Task<IEnumerable<BoardViewDto>> GetAllAsync();
     }
 }

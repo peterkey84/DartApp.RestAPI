@@ -26,6 +26,7 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
             return dtoObject.ToList();
         }
 
+
         public async Task<TDto> GetByIdAsync(int id)
         {
             if(id == 0) 
@@ -50,7 +51,6 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
             if(dto == null)
             {
                 throw new ArgumentNullException();
-
             }
 
             var addObject = _mapper.Map<TEntity>(dto);
@@ -66,7 +66,11 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
             {
                 await _repository.DeleteAsync(deletedObject);
             }
-            throw new ArgumentNullException();
+            else
+            {
+                throw new ArgumentNullException();
+
+            }
         }
 
 
