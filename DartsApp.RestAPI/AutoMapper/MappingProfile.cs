@@ -39,12 +39,20 @@ namespace DartsApp.RestAPI.AutoMapper
             CreateMap<Player, PlayerCreateDto>();
 
             CreateMap<Player, PlayerViewDto>().ForMember(dest=>dest.Name, opt=>opt.MapFrom(src=>src.FirstName + " " + src.LastName));
+
+            CreateMap<PlayerRankingDto, Player>();
+            CreateMap<Player, PlayerRankingDto>().ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.FirstName + " " + src.LastName));
         }
 
         private void TournamentMapping()
         {   
             CreateMap<TournamentCreateDto, Tournament>();
             CreateMap<Tournament, TournamentCreateDto>();
+
+            CreateMap<TournamentViewDto, Tournament>();
+            CreateMap<Tournament, TournamentViewDto>().ForMember(d =>d.FormattedTournamentDate, opt=>opt.MapFrom(src =>src.TournamentDate.ToString("yyyy-MM-dd")));
+
+            CreateMap<Tournament, TournamentMatchedDto>().ForMember(d => d.FormattedTournamentDate, opt => opt.MapFrom(src => src.TournamentDate.ToString("yyyy-MM-dd")));
 
         }
     }
