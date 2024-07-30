@@ -4,5 +4,7 @@ namespace DartsApp.RestAPI.Repositories.Interfaces
 {
     public interface IPlayerRepository: IBaseRepository<Player>
     {
+
+        Task<Player> PlayerWithHighestRankingPlace();
     }
 }

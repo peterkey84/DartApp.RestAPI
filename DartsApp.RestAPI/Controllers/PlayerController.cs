@@ -13,52 +13,55 @@ namespace DartsApp.RestAPI.Controllers
 
         private readonly IPlayerService _playerService;
 
-        public PlayerController(IMapper mapper, IPlayerService playerService)
+        public PlayerController(IPlayerService playerService)
         {
             _playerService = playerService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllPlayers()
+        public async Task<IEnumerable<PlayerViewDto>> GetAllPlayers()
         {
             var players = await _playerService.GetAllAsync();
 
-            return Ok(players);
+            return players;
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetPlayerById(int id)
+        public async Task<PlayerCreateDto> GetPlayerById(int id)
         {
             var player = await _playerService.GetByIdAsync(id);
 
-            if(player == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(player);
+            return player;
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddNewPlayer(PlayerCreateDto playerDto)
+        public async Task AddNewPlayer(PlayerCreateDto playerDto)
         {
             await _playerService.AddAsync(playerDto);
 
-            return Ok();
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdatePlayerById()
+        [HttpPut("{id}")]
+        public async Task UpdatePlayerById(int id, PlayerCreateDto playerDto)
         {
-            return Ok();
+            await _playerService.UpdateAsync(id, playerDto);
+
+
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePlayerById(int id)
+        public async Task DeletePlayerById(int id)
         {
             await _playerService.DeleteAsync(id);
 
-            return Ok();
+        }
+
+        [HttpGet("player/highest-ranking")]
+        public async Task<PlayerRankingDto> GetPlayerWithHighestRankingPlace()
+        {
+            PlayerRankingDto player = await _playerService.GetPlayerWithHighestRankingPlace();
+
+            return player;
         }
     }
 }

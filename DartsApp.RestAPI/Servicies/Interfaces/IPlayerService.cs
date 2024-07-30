@@ -5,5 +5,7 @@ namespace DartsApp.RestAPI.Servicies.Interfaces
 {
     public interface IPlayerService: IBaseService<PlayerCreateDto, Player>
     {
+        new Task<IEnumerable<PlayerViewDto>> GetAllAsync();
+        Task<PlayerRankingDto> GetPlayerWithHighestRankingPlace();
     }
 }
