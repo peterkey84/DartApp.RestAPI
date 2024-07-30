@@ -22,7 +22,9 @@ namespace DartsApp.RestAPI.Extensions
             service.AddScoped<IBoardRepository, BoardRepository>();
             service.AddScoped<IBaseRepository<Place>, PlaceRepository>();
             service.AddScoped<IPlaceRepository, PlaceRepository>();
+            service.AddScoped<IBaseRepository<Player>, PlayerRepository>();
             service.AddScoped<IPlayerRepository, PlayerRepository>();
+            service.AddScoped<IBaseRepository<Tournament>, TournamentRepository>();
             service.AddScoped<ITournamentRepository, TournamentRepository>();
 
             //Added services
