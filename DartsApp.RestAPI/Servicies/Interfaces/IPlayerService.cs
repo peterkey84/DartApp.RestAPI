@@ -7,5 +7,6 @@ namespace DartsApp.RestAPI.Servicies.Interfaces
     {
         new Task<IEnumerable<PlayerViewDto>> GetAllAsync();
         Task<PlayerRankingDto> GetPlayerWithHighestRankingPlace();
+        Task<IEnumerable<PlayerRankingDto>> GetPlayersWithoutRankingPoints();
     }
 }

@@ -6,5 +6,6 @@ namespace DartsApp.RestAPI.Repositories.Interfaces
     {
 
         Task<Player> PlayerWithHighestRankingPlace();
+        Task<IEnumerable<Player>> PlayerWithoutRankingPoints();
     }
 }

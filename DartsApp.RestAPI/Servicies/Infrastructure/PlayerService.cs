@@ -96,5 +96,14 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
             return playerDto;
 
         }
+        public async Task<IEnumerable<PlayerRankingDto>> GetPlayersWithoutRankingPoints()
+        {
+            var players = await _playerRepository.PlayerWithoutRankingPoints();
+
+            var playerDto = _mapper.Map<IEnumerable<PlayerRankingDto>>(players);
+
+            return playerDto;
+        }
+
     }
 }

@@ -56,12 +56,21 @@ namespace DartsApp.RestAPI.Controllers
 
         }
 
-        [HttpGet("player/highest-ranking")]
+        [HttpGet("players/highest-ranking")]
         public async Task<PlayerRankingDto> GetPlayerWithHighestRankingPlace()
         {
             PlayerRankingDto player = await _playerService.GetPlayerWithHighestRankingPlace();
 
             return player;
+        }
+
+        [HttpGet("players/without-ranking-points")]
+        public async Task<IEnumerable<PlayerRankingDto>> GetPlayersWithoutRankingPoints()
+        {
+            var players = await _playerService.GetPlayersWithoutRankingPoints();
+
+            return players;
+
         }
     }
 }
