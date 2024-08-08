@@ -26,6 +26,8 @@ namespace DartsApp.RestAPI.Extensions
             service.AddScoped<IPlayerRepository, PlayerRepository>();
             service.AddScoped<IBaseRepository<Tournament>, TournamentRepository>();
             service.AddScoped<ITournamentRepository, TournamentRepository>();
+            service.AddScoped<IPlayerTournamentRepository, PlayerTournamentRepository>();
+
 
             //Added services
 
@@ -35,7 +37,7 @@ namespace DartsApp.RestAPI.Extensions
             service.AddScoped<IPlaceService, PlaceService>();
             service.AddScoped<IPlayerService, PlayerService>();
             service.AddScoped<ITournamentService, TournamentService>();
-
+            service.AddScoped<IPlayerTournamentService, PlayerTournamentService>();
         }
     }
 }
