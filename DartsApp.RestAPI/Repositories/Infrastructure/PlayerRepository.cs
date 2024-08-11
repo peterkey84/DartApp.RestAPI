@@ -32,5 +32,28 @@ namespace DartsApp.RestAPI.Repositories.Infrastructure
             return players;
 
         }
+
+        public async Task<IEnumerable<Player>> GetPlayersWithRankingPointsUnder200()
+        {
+            IEnumerable<Player> players = await _dbContext.Players.TakeWhile(p => p.Ranking < 200).ToListAsync();
+            
+            return players;
+        }
+
+        public string GetPlayerStatisticsByPlayerId(int id)
+        {
+
+            IQueryable<string> players = _dbContext.PlayerTournaments.Where(p => p.PlayerId == id).Select(x => x.PlayerStatistics);
+            
+            var statisticOfPlayer = players.FirstOrDefault();
+
+            if (statisticOfPlayer == null)
+            {
+                return "Statistics not found for this player.";
+            }
+
+            return statisticOfPlayer;
+
+        }
     }
 }

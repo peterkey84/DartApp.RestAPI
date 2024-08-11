@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DartsApp.RestAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]s")]
     [ApiController]
     public class PlayerController : ControllerBase
     {
@@ -56,7 +56,7 @@ namespace DartsApp.RestAPI.Controllers
 
         }
 
-        [HttpGet("players/highest-ranking")]
+        [HttpGet("highest-ranking")]
         public async Task<PlayerRankingDto> GetPlayerWithHighestRankingPlace()
         {
             PlayerRankingDto player = await _playerService.GetPlayerWithHighestRankingPlace();
@@ -64,12 +64,31 @@ namespace DartsApp.RestAPI.Controllers
             return player;
         }
 
-        [HttpGet("players/without-ranking-points")]
+        [HttpGet("without-ranking-points")]
         public async Task<IEnumerable<PlayerRankingDto>> GetPlayersWithoutRankingPoints()
         {
             var players = await _playerService.GetPlayersWithoutRankingPoints();
 
             return players;
+
+        }
+
+        [HttpGet("ranking-point-under-200")]
+        public async Task<IEnumerable<PlayerRankingDto>> GetPlayersWithRankingPointsUnder200()
+        {
+
+            IEnumerable <PlayerRankingDto> players = await _playerService.GetPlayersWithRankingPointsUnder200();
+
+            return players;
+        }
+
+        [HttpGet("statistic-for-player/{id}")]
+        public string GetPlayerStatisticsByPlayerId(int id)
+        {
+
+            string playerStatistic = _playerService.GetPlayerStatisticsByPlayerId(id);
+
+            return playerStatistic;
 
         }
     }

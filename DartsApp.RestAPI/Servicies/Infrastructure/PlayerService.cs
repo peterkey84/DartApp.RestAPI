@@ -96,6 +96,8 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
             return playerDto;
 
         }
+
+
         public async Task<IEnumerable<PlayerRankingDto>> GetPlayersWithoutRankingPoints()
         {
             var players = await _playerRepository.PlayerWithoutRankingPoints();
@@ -103,6 +105,25 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
             var playerDto = _mapper.Map<IEnumerable<PlayerRankingDto>>(players);
 
             return playerDto;
+        }
+
+        public async Task<IEnumerable<PlayerRankingDto>> GetPlayersWithRankingPointsUnder200()
+        {
+            var players = await _playerRepository.GetPlayersWithRankingPointsUnder200();
+
+            IEnumerable<PlayerRankingDto> playerDto = _mapper.Map< IEnumerable<PlayerRankingDto>>(players);
+
+            return playerDto;
+
+        }
+
+        public string GetPlayerStatisticsByPlayerId(int playerId)
+        {
+
+            var player = _playerRepository.GetPlayerStatisticsByPlayerId(playerId);
+
+            return player;
+
         }
 
     }
