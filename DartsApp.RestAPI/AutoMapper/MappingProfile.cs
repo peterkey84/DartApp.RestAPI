@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
-using DartsApp.RestAPI.DTOs;
+using DartsApp.RestAPI.DTOs.BoardDto;
+using DartsApp.RestAPI.DTOs.PlaceDto;
+using DartsApp.RestAPI.DTOs.PlayerDto;
+using DartsApp.RestAPI.DTOs.TournamentDto;
 using DartsApp.RestAPI.Entities;
 
 namespace DartsApp.RestAPI.AutoMapper

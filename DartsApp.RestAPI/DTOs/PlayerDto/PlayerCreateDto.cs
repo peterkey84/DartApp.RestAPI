@@ -1,4 +1,4 @@
-﻿namespace DartsApp.RestAPI.DTOs
+﻿namespace DartsApp.RestAPI.DTOs.PlayerDto
 {
     public class PlayerCreateDto
     {
@@ -11,18 +11,5 @@
         public DateTime BirthdayDate { get; set; }
 
 
-    }
-
-    public class PlayerViewDto
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
-
-    public class PlayerRankingDto
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int Ranking { get; set; }
     }
 }

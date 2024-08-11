@@ -1,4 +1,4 @@
-﻿using DartsApp.RestAPI.DTOs;
+﻿using DartsApp.RestAPI.DTOs.PlayerDto;
 using DartsApp.RestAPI.Entities;
 
 namespace DartsApp.RestAPI.Servicies.Interfaces
