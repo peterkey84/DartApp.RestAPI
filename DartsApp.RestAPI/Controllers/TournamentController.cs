@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace DartsApp.RestAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]s")]
     [ApiController]
     public class TournamentController : ControllerBase
     {
@@ -58,7 +58,7 @@ namespace DartsApp.RestAPI.Controllers
         }
 
 
-        [HttpGet("tournaments/locatad-in-the-{city}")]
+        [HttpGet("locatad-in-the-{city}")]
         public async Task<IEnumerable<TournamentMatchedDto>> GetMatchedCities(string city)
         {
             var tournaments = await _tournamentService.GetMatchedCities(city);

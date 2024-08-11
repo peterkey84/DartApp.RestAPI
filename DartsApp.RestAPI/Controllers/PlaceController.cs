@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DartsApp.RestAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]s")]
     [ApiController]
     public class PlaceController : ControllerBase
     {
