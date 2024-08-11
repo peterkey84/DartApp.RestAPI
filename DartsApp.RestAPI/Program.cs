@@ -17,7 +17,7 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-DependencyInjectionExtension.AddDepencyInjection(builder.Services);
+builder.Services.AddDependencyInjection();
 
 // Add services to the container.
 
