@@ -12,49 +12,42 @@ namespace DartsApp.RestAPI.Controllers
     public class TournamentController : ControllerBase
     {
 
-        private readonly IMapper _mapper;
         private readonly ITournamentService _tournamentService;
 
-        public TournamentController(IMapper mapper, ITournamentService tournamentService)
+        public TournamentController(ITournamentService tournamentService)
         {
-            _mapper = mapper;
+
             _tournamentService = tournamentService;
         }
         [HttpGet]
         public async Task<IEnumerable<TournamentViewDto>> GetAllTournaments()
         {
-
-            IEnumerable<TournamentViewDto> tournaments = await _tournamentService.GetAllAsync();
-
-            return tournaments;
+            return await _tournamentService.GetAllTournamentsAsync(); ;
         }
 
         [HttpGet("{id}")]
-        public async Task<TournamentCreateDto> GetTournamentById(int id)
+        public async Task<TournamentViewDto> GetTournamentById(int id)
         {
-
-            var tournament = await _tournamentService.GetByIdAsync(id);
-
-            return tournament;
-
+            return await _tournamentService.GetTournamentByIdAsync(id); ;
         }
 
         [HttpPost]
-        public async Task AddNewTournament(TournamentCreateDto tournamentCreateDto)
+        public async Task<TournamentCreateDto> AddNewTournament(TournamentCreateDto tournamentCreateDto)
         {
-            await _tournamentService.AddAsync(tournamentCreateDto);
+           return await _tournamentService.AddTournamentAsync(tournamentCreateDto);
         }
 
-        [HttpPut("{id}")]
-        public async Task UpdateTournamentById(TournamentCreateDto tournament, int id)
+        [HttpPut]
+        public async Task<TournamentCreateDto> UpdateTournamentById(TournamentCreateDto tournament)
         {
-            await _tournamentService.UpdateAsync(id, tournament);
+            return await _tournamentService.UpdateTournamentAsync(tournament);
         }
 
         [HttpDelete("{id}")]
         public async Task DeleteTournamentById(int id)
         {
            await _tournamentService.DeleteAsync(id);
+            //TODO dodać info zwrotne
         }
 
 

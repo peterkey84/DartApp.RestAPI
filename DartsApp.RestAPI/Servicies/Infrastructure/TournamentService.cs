@@ -6,30 +6,49 @@ using DartsApp.RestAPI.Servicies.Interfaces;
 
 namespace DartsApp.RestAPI.Servicies.Infrastructure
 {
-    public class TournamentService : BaseService<TournamentCreateDto, Tournament>, ITournamentService
+    public class TournamentService : BaseService<Tournament>, ITournamentService
     {
         private readonly IMapper _mapper;
         private readonly ITournamentRepository _tournamentRepository;
 
-        public TournamentService(ITournamentRepository tournamentRepository, IMapper mapper) : base(tournamentRepository, mapper)
+        public TournamentService(ITournamentRepository tournamentRepository, IMapper mapper) : base(tournamentRepository)
         {
             _tournamentRepository = tournamentRepository;
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<TournamentViewDto>> GetAllAsync()
+        public async Task<IEnumerable<TournamentViewDto>> GetAllTournamentsAsync()
         {
-            var tournaments = await _tournamentRepository.GetAllAsync();
-
-            var tournamentsDto = _mapper.Map<IEnumerable<TournamentViewDto>>(tournaments);
-
-            return tournamentsDto;
+            return _mapper.Map<IEnumerable<TournamentViewDto>>(await base.GetAllAsync());
         }
 
-
-
-        public async Task UpdateAsync(int id, TournamentCreateDto tournamentDto)
+        public async Task<TournamentViewDto> GetTournamentByIdAsync(int id)
         {
+            var tournament = await _tournamentRepository.GetByIdAsync(id);
+            if(tournament == null)
+            {
+                //todo
+            }
+
+            return _mapper.Map<TournamentViewDto>(tournament);
+        }
+
+        public async Task<TournamentCreateDto> AddTournamentAsync(TournamentCreateDto tournamentDto)
+        {
+
+            var tournament = _mapper.Map<Tournament>(tournamentDto);
+
+            await base.AddAsync(tournament);
+
+            return _mapper.Map<TournamentCreateDto>(await _tournamentRepository.GetByIdAsync(tournament.Id));
+
+
+        }
+
+        public async Task<TournamentCreateDto> UpdateTournamentAsync(TournamentCreateDto tournamentDto)
+        {
+            var id = tournamentDto.Id;
+
             var existingTournament = await _tournamentRepository.GetByIdAsync(id);
 
             if (existingTournament == null)
@@ -62,6 +81,8 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
                 await _tournamentRepository.UpdateAsync(existingTournament);
 
             }
+
+            return _mapper.Map<TournamentCreateDto>(await _tournamentRepository.GetByIdAsync(id));
         }
 
         public async Task<IEnumerable<TournamentMatchedDto>> GetMatchedCities(string city)
@@ -73,5 +94,7 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
 
 
         }
+
+
     }
 }

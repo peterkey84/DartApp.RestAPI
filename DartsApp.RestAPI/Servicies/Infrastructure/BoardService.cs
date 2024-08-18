@@ -6,32 +6,39 @@ using DartsApp.RestAPI.Servicies.Interfaces;
 
 namespace DartsApp.RestAPI.Servicies.Infrastructure
 {
-    public class BoardService : BaseService<BoardDto, Board>, IBoardService
+    public class BoardService : BaseService<Board>, IBoardService
     {
         private readonly IMapper _mapper;
         private readonly IBoardRepository _boardRepository;
         private readonly ITournamentRepository _tournamentRepository;
 
-        public BoardService(IBoardRepository boardRepository, IMapper mapper, ITournamentRepository tournamentRepository) : base(boardRepository, mapper)
+        public BoardService(IBaseRepository<Board> baseRepository, IMapper mapper, ITournamentRepository tournamentRepository, IBoardRepository boardRepository) : base(baseRepository)
         {
             _mapper = mapper;
-            _boardRepository = boardRepository;
             _tournamentRepository = tournamentRepository;
+            _boardRepository = boardRepository;
         }
 
-
-
-        public async Task<IEnumerable<BoardViewDto>> GetAllAsync()
+        public async Task<IEnumerable<BoardViewDto>> GetAllBoardsAsync()
         {
-            var boards = await _boardRepository.GetAllAsync();
+            var boards = await base.GetAllAsync();
 
-            var boardsViewDto = _mapper.Map<IEnumerable<BoardViewDto>>(boards);
-
-            return boardsViewDto;
+            return _mapper.Map<IEnumerable<BoardViewDto>>(boards);
         }
 
 
-        public async Task AddAsync(BoardDto boardDto)
+        public async Task<BoardDto> GetBoardByIdAsync(int id)
+        {
+
+            var board = await base.GetByIdAsync(id);
+            if(board == null)
+            {
+                //TODO
+            }
+
+            return _mapper.Map<BoardDto>(board);
+        }
+        public async Task<BoardViewDto> AddBoardAsync(BoardDto boardDto)
         {
             var board = _mapper.Map<Board>(boardDto);
 
@@ -41,15 +48,16 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
             {
                 throw new Exception("Invalid TournamentId");
             }
-            
-            _mapper.Map<BoardViewDto>(_boardRepository.AddAsync(board));
+
+            await base.AddAsync(board);
+
+            return _mapper.Map<BoardViewDto>(await _boardRepository.GetByIdAsync(board.Id)); ;
 
         }
 
-
-
-        public async Task UpdateAsync(int id, BoardDto boardDto)
+        public async Task<BoardDto> UpdateBoardAsync(BoardDto boardDto)
         {
+            int id = boardDto.Id;
             var existingBoard = await _boardRepository.GetByIdAsync(id);
 
             if(existingBoard == null)
@@ -95,11 +103,13 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
 
             if (hasChanges)
             {
-                await _boardRepository.UpdateAsync(existingBoard);
+                await base.UpdateAsync(existingBoard);
 
             }
 
+            return _mapper.Map<BoardDto>(await _boardRepository.GetByIdAsync(id)); ;
         }
+
 
     }
 }

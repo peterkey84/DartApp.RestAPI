@@ -3,9 +3,12 @@ using DartsApp.RestAPI.Entities;
 
 namespace DartsApp.RestAPI.Servicies.Interfaces
 {
-    public interface IPlayerService: IBaseService<PlayerCreateDto, Player>
+    public interface IPlayerService: IBaseService<Player>
     {
-        new Task<IEnumerable<PlayerViewDto>> GetAllAsync();
+        Task<IEnumerable<PlayerViewDto>> GetAllPlayersAsync();
+        Task<PlayerViewDto> GetPlayerByIdAsync(int id);
+        Task<PlayerCreateDto> AddPlayerAsync(PlayerCreateDto playerDto);
+        Task<PlayerCreateDto> UpdatePlayerAsync(PlayerCreateDto playerDto);
         Task<PlayerRankingDto> GetPlayerWithHighestRankingPlace();
         Task<IEnumerable<PlayerRankingDto>> GetPlayersWithoutRankingPoints();
         Task<IEnumerable<PlayerRankingDto>> GetPlayersWithRankingPointsUnder200();

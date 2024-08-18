@@ -10,50 +10,45 @@ namespace DartsApp.RestAPI.Controllers
     [ApiController]
     public class PlaceController : ControllerBase
     {
-        private readonly IMapper _mapper;
 
         private readonly IPlaceService _placeService;
 
-        public PlaceController(IMapper mapper, IPlaceService placeService)
+        public PlaceController(IPlaceService placeService)
         {
-            _mapper = mapper;
+
             _placeService = placeService;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<PlaceCreateDto>> GetAllPlaces()
+        public async Task<IEnumerable<PlaceViewDto>> GetAllPlaces()
         {
-            IEnumerable<PlaceCreateDto> places = await _placeService.GetAllAsync();
-
-            return places;
+            return await _placeService.GetAllPlacesAsync(); 
         }
 
         [HttpGet("{id}")]
-        public async Task<PlaceCreateDto> GetPlaceById(int id)
+        public async Task<PlaceViewDto> GetPlaceById(int id)
         {
-            var place = await _placeService.GetByIdAsync(id);
-
-            return place;
+            return await _placeService.GetPlaceByIdAsync(id);
         }
 
         
         [HttpPost]
-        public async Task AddNewPlace(PlaceCreateDto placeDto)
+        public async Task<PlaceViewDto> AddNewPlace(PlaceCreateDto placeDto)
         {
-            await _placeService.AddAsync(placeDto);
-
+           return await _placeService.AddPlaceAsync(placeDto);
         }
 
-        [HttpPut("{id}")]
-        public async Task UpdatePlaceById(int id, PlaceCreateDto placeDto)
+        [HttpPut]
+        public async Task<PlaceViewDto> UpdatePlaceById(PlaceCreateDto placeDto)
         {
-            await _placeService.UpdateAsync(id, placeDto);
+            return await _placeService.UpdatePlaceAsync(placeDto);
         }
 
         [HttpDelete("{id}")]
         public async Task DeletePlaceById(int id)
         {
             await _placeService.DeleteAsync(id);
+            //TODO dać info zwrotne
 
         }
     }

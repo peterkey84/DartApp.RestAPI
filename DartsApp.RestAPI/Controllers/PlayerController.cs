@@ -21,30 +21,29 @@ namespace DartsApp.RestAPI.Controllers
         [HttpGet]
         public async Task<IEnumerable<PlayerViewDto>> GetAllPlayers()
         {
-            var players = await _playerService.GetAllAsync();
+            var players = await _playerService.GetAllPlayersAsync();
 
             return players;
         }
 
         [HttpGet("{id}")]
-        public async Task<PlayerCreateDto> GetPlayerById(int id)
+        public async Task<PlayerViewDto> GetPlayerById(int id)
         {
-            var player = await _playerService.GetByIdAsync(id);
 
-            return player;
+            return await _playerService.GetPlayerByIdAsync(id); ;
         }
 
         [HttpPost]
-        public async Task AddNewPlayer(PlayerCreateDto playerDto)
+        public async Task<PlayerCreateDto> AddNewPlayer(PlayerCreateDto playerDto)
         {
-            await _playerService.AddAsync(playerDto);
+            return await _playerService.AddPlayerAsync(playerDto);
 
         }
 
-        [HttpPut("{id}")]
-        public async Task UpdatePlayerById(int id, PlayerCreateDto playerDto)
+        [HttpPut]
+        public async Task<PlayerCreateDto> UpdatePlayerById(PlayerCreateDto playerDto)
         {
-            await _playerService.UpdateAsync(id, playerDto);
+            return await _playerService.UpdatePlayerAsync(playerDto);
 
 
         }
@@ -53,6 +52,8 @@ namespace DartsApp.RestAPI.Controllers
         public async Task DeletePlayerById(int id)
         {
             await _playerService.DeleteAsync(id);
+
+            //TODO dać informacje zwrotną
 
         }
 

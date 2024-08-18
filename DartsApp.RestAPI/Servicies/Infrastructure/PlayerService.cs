@@ -6,13 +6,13 @@ using DartsApp.RestAPI.Servicies.Interfaces;
 
 namespace DartsApp.RestAPI.Servicies.Infrastructure
 {
-    public class PlayerService : BaseService<PlayerCreateDto, Player>, IPlayerService
+    public class PlayerService : BaseService<Player>, IPlayerService
     {
         private readonly IPlayerRepository _playerRepository;
         private readonly IMapper _mapper;
 
 
-        public PlayerService(IPlayerRepository playerRepository, IMapper mapper) : base(playerRepository, mapper)
+        public PlayerService(IPlayerRepository playerRepository, IMapper mapper) : base(playerRepository)
         {
             
             _mapper = mapper;
@@ -20,19 +20,41 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
 
         }
 
-        async Task<IEnumerable<PlayerViewDto>> IPlayerService.GetAllAsync()
+
+        public async Task<IEnumerable<PlayerViewDto>> GetAllPlayersAsync()
         {
 
-            var players = await _playerRepository.GetAllAsync();
+            var players = await base.GetAllAsync();
 
-            var playersViewDto = _mapper.Map <IEnumerable<PlayerViewDto>>(players);
+            return _mapper.Map<IEnumerable<PlayerViewDto>>(players); ;
+        }
 
-            return playersViewDto;
+        public async Task<PlayerViewDto> GetPlayerByIdAsync(int id)
+        {
+
+            var player = await base.GetByIdAsync(id);
+            if(player == null)
+            {
+                //TODO
+            }
+
+            return _mapper.Map<PlayerViewDto>(player);
+        }
+
+        public async Task<PlayerCreateDto> AddPlayerAsync(PlayerCreateDto playerDto)
+        {
+
+            var player = _mapper.Map<Player>(playerDto);
+
+            await base.AddAsync(player);
+
+            return _mapper.Map<PlayerCreateDto>(await _playerRepository.GetByIdAsync(player.Id));
 
         }
 
-        public async Task UpdateAsync(int id, PlayerCreateDto playerDto)
+        public async Task<PlayerCreateDto> UpdatePlayerAsync(PlayerCreateDto playerDto)
         {
+            var id = playerDto.Id;
             var existingPlayer = await _playerRepository.GetByIdAsync(id);
 
             if (existingPlayer == null)
@@ -83,6 +105,8 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
                 await _playerRepository.UpdateAsync(existingPlayer);
 
             }
+
+            return _mapper.Map<PlayerCreateDto>(await _playerRepository.GetByIdAsync(id)); 
 
         }
 
