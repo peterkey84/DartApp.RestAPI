@@ -15,19 +15,6 @@ namespace DartsApp.RestAPI.Repositories.Infrastructure
             _dbSet = dbContext.Set<T>();
         }
 
-        public async Task AddAsync(T entity)
-        {
-            await _dbSet.AddAsync(entity);
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task DeleteAsync(T entity)
-        {
-             _dbSet.Remove(entity);
-             await _dbContext.SaveChangesAsync();
-
-        }
-
         public virtual async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _dbSet.ToListAsync();
@@ -35,15 +22,34 @@ namespace DartsApp.RestAPI.Repositories.Infrastructure
 
         public async Task<T> GetByIdAsync(int id)
         {
-           return await _dbSet.FindAsync(id);
+            var entity = await _dbSet.FindAsync(id);
+
+            return entity;
+        }
+
+
+        public async Task AddAsync(T entity)
+        {
+            await _dbSet.AddAsync(entity);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(T entity)
         {
-             _dbSet.Attach(entity);
+            _dbSet.Attach(entity);
             _dbContext.Entry(entity).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
+   
         }
+
+        public async Task DeleteAsync(T entity)
+        {
+            _dbSet.Remove(entity);
+            await _dbContext.SaveChangesAsync();
+
+
+        }
+
     }
 
 }

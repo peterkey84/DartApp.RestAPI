@@ -4,87 +4,56 @@ using DartsApp.RestAPI.Servicies.Interfaces;
 
 namespace DartsApp.RestAPI.Servicies.Infrastructure
 {
-    public class BaseService<TDto, TEntity> : IBaseService<TDto, TEntity> where TDto : class where TEntity : class
+    public class BaseService<TEntity> : IBaseService<TEntity>  where TEntity : class
     {
 
         private readonly IBaseRepository<TEntity> _repository;
-        private readonly IMapper _mapper;
+        private IPlayerRepository playerRepository;
+        private IMapper mapper;
 
-        public BaseService(IBaseRepository<TEntity> repository, IMapper mapper)
+        public BaseService(IBaseRepository<TEntity> repository)
         {
             _repository = repository;
-            _mapper = mapper;
         }
 
-
-        public virtual async Task<IEnumerable<TDto>> GetAllAsync()
+        public BaseService(IPlayerRepository playerRepository, IMapper mapper)
         {
-            var entity = await _repository.GetAllAsync();
-
-            var dtoObject = _mapper.Map<IEnumerable<TDto>>(entity);
-
-            return dtoObject.ToList();
+            this.playerRepository = playerRepository;
+            this.mapper = mapper;
         }
 
-
-        public async Task<TDto> GetByIdAsync(int id)
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            if(id == 0) 
-            {
-                throw new ArgumentNullException();
-            }
-
-            var objectId = await _repository.GetByIdAsync(id);
-
-            if(objectId == null)
-            {
-                throw new ArgumentNullException();
-            }
-
-            return _mapper.Map<TDto>(objectId);
-
-
+            return await _repository.GetAllAsync();
         }
 
-        public async Task AddAsync(TDto dto)
+        public virtual async Task<TEntity> GetByIdAsync(int id)
         {
-            if(dto == null)
-            {
-                throw new ArgumentNullException();
-            }
-
-            var addObject = _mapper.Map<TEntity>(dto);
-            await _repository.AddAsync(addObject);
-
+            return await _repository.GetByIdAsync(id);
         }
 
-        public async Task DeleteAsync(int id)
+        public virtual async Task AddAsync(TEntity entity)
         {
-            var deletedObject = await _repository.GetByIdAsync(id);
 
-            if(deletedObject != null)
-            {
-                await _repository.DeleteAsync(deletedObject);
-            }
-            else
-            {
-                throw new ArgumentNullException();
-
-            }
+            await _repository.AddAsync(entity);
         }
 
-
-
-        public async Task UpdateAsync(int id, TDto dto)
+        public virtual async Task<TEntity> UpdateAsync(TEntity entity)
         {
-            if(dto == null || id == null)
+
+            await _repository.UpdateAsync(entity);
+
+            return entity;
+        }
+
+        public virtual async Task DeleteAsync(int id)
+        {
+            var entity = await _repository.GetByIdAsync(id);
+
+            if (entity != null)
             {
-                throw new ArgumentNullException(nameof(dto));
+                await _repository.DeleteAsync(entity);
             }
-            var updateObject = _mapper.Map<TEntity>(dto);
-            await _repository.UpdateAsync(updateObject);
-
-
         }
     }  
 }

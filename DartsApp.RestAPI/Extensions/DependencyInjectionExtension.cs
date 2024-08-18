@@ -29,7 +29,7 @@ namespace DartsApp.RestAPI.Extensions
 
             //Added services
 
-            service.AddScoped(typeof(IBaseService<,>), typeof(BaseService<,>));
+            service.AddScoped(typeof(IBaseService<>), typeof(BaseService<>));
 
             service.AddScoped<IBoardService, BoardService>();
             service.AddScoped<IPlaceService, PlaceService>();
