@@ -22,7 +22,17 @@ namespace DartsApp.RestAPI.Repositories.Infrastructure
 
         public async Task<T> GetByIdAsync(int id)
         {
+            if(id == 0)
+            {
+                return null;
+            }
+
             var entity = await _dbSet.FindAsync(id);
+
+            if(entity == null)
+            {
+                return null;
+            }
 
             return entity;
         }
@@ -30,23 +40,31 @@ namespace DartsApp.RestAPI.Repositories.Infrastructure
 
         public async Task AddAsync(T entity)
         {
-            await _dbSet.AddAsync(entity);
-            await _dbContext.SaveChangesAsync();
+            if(entity != null)
+            {
+                await _dbSet.AddAsync(entity);
+                await _dbContext.SaveChangesAsync();
+            }
         }
 
         public async Task UpdateAsync(T entity)
         {
-            _dbSet.Attach(entity);
-            _dbContext.Entry(entity).State = EntityState.Modified;
-            await _dbContext.SaveChangesAsync();
+            if(entity != null)
+            {
+                _dbSet.Attach(entity);
+                _dbContext.Entry(entity).State = EntityState.Modified;
+                await _dbContext.SaveChangesAsync();
+            }
    
         }
 
         public async Task DeleteAsync(T entity)
         {
-            _dbSet.Remove(entity);
-            await _dbContext.SaveChangesAsync();
-
+            if(entity != null)
+            {
+                _dbSet.Remove(entity);
+                await _dbContext.SaveChangesAsync();
+            }
 
         }
 
