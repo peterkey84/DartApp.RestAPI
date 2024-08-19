@@ -6,6 +6,7 @@ using DartsApp.RestAPI.Repositories.Infrastructure;
 using DartsApp.RestAPI.Servicies.Infrastructure;
 using DartsApp.RestAPI.Servicies.Interfaces;
 using DartsApp.RestAPI.Extensions;
+using DartsApp.RestAPI.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Logging.AddConsole(); 
+builder.Logging.AddDebug();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -35,6 +39,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

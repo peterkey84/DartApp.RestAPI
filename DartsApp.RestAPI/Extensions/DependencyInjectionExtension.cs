@@ -1,5 +1,6 @@
 ﻿using DartsApp.RestAPI.DAL;
 using DartsApp.RestAPI.Entities;
+using DartsApp.RestAPI.Middleware;
 using DartsApp.RestAPI.Repositories.Infrastructure;
 using DartsApp.RestAPI.Repositories.Interfaces;
 using DartsApp.RestAPI.Servicies.Infrastructure;
@@ -35,6 +36,8 @@ namespace DartsApp.RestAPI.Extensions
             service.AddScoped<IPlaceService, PlaceService>();
             service.AddScoped<IPlayerService, PlayerService>();
             service.AddScoped<ITournamentService, TournamentService>();
+
+            service.AddScoped<ExceptionHandlingMiddleware>();
         }
     }
 }
