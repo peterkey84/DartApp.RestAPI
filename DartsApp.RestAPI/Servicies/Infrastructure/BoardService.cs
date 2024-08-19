@@ -33,7 +33,7 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
             var board = await base.GetByIdAsync(id);
             if(board == null)
             {
-                //TODO
+                throw new Exception();
             }
 
             return _mapper.Map<BoardDto>(board);
@@ -46,7 +46,7 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
 
             if(id == null)
             {
-                throw new Exception("Invalid TournamentId");
+                throw new Exception();
             }
 
             await base.AddAsync(board);
@@ -62,7 +62,7 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
 
             if(existingBoard == null)
             {
-                throw new Exception("Board not found");
+                throw new Exception();
             }
 
             bool hasChanges = false;

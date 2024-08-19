@@ -35,7 +35,7 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
             var player = await base.GetByIdAsync(id);
             if(player == null)
             {
-                //TODO
+                throw new Exception();
             }
 
             return _mapper.Map<PlayerViewDto>(player);
@@ -59,7 +59,7 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
 
             if (existingPlayer == null)
             {
-                throw new Exception("Player not found");
+                throw new Exception();
             }
 
             bool hasChanges = false;
@@ -145,6 +145,11 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
         {
 
             var player = _playerRepository.GetPlayerStatisticsByPlayerId(playerId);
+
+            if(player == null)
+            {
+                throw new Exception();
+            }
 
             return player;
 

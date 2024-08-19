@@ -8,18 +8,10 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
     {
 
         private readonly IBaseRepository<TEntity> _repository;
-        private IPlayerRepository playerRepository;
-        private IMapper mapper;
 
         public BaseService(IBaseRepository<TEntity> repository)
         {
             _repository = repository;
-        }
-
-        public BaseService(IPlayerRepository playerRepository, IMapper mapper)
-        {
-            this.playerRepository = playerRepository;
-            this.mapper = mapper;
         }
 
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
@@ -50,10 +42,11 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
         {
             var entity = await _repository.GetByIdAsync(id);
 
-            if (entity != null)
+            if (entity == null)
             {
-                await _repository.DeleteAsync(entity);
+                throw new Exception();
             }
+            await _repository.DeleteAsync(entity);
         }
     }  
 }

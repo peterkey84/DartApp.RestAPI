@@ -27,7 +27,7 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
             var tournament = await _tournamentRepository.GetByIdAsync(id);
             if(tournament == null)
             {
-                //todo
+                throw new Exception();
             }
 
             return _mapper.Map<TournamentViewDto>(tournament);
@@ -53,7 +53,7 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
 
             if (existingTournament == null)
             {
-                throw new Exception("Tournament not found");
+                throw new Exception();
             }
 
             bool hasChanges = false;
@@ -88,9 +88,9 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
         public async Task<IEnumerable<TournamentMatchedDto>> GetMatchedCities(string city)
         {
 
-           var ttt = await _tournamentRepository.GetMatchedCities(city);
+           var tournaments = await _tournamentRepository.GetMatchedCities(city);
 
-            return  _mapper.Map<IEnumerable<TournamentMatchedDto>>(ttt);
+            return  _mapper.Map<IEnumerable<TournamentMatchedDto>>(tournaments);
 
 
         }

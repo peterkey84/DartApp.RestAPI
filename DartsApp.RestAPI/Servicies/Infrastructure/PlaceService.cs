@@ -38,7 +38,7 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
 
             if(place == null)
             {
-                //TODO
+                throw new Exception();
             }
 
             return _mapper.Map<PlaceViewDto>(place);
@@ -68,7 +68,7 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
 
             if(existingPlace == null)
             {
-                throw new Exception("Place not found");
+                throw new Exception();
             }
 
             bool hasChanges = false;
