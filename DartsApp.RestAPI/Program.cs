@@ -7,6 +7,7 @@ using DartsApp.RestAPI.Servicies.Infrastructure;
 using DartsApp.RestAPI.Servicies.Interfaces;
 using DartsApp.RestAPI.Extensions;
 using DartsApp.RestAPI.Middleware;
+using DartsApp.RestAPI.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,8 @@ builder.Services.AddAutoMapper(typeof(Program));
 //Added connetion string
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddOptionsPatternSettings(builder.Configuration);
 
 builder.Services.AddDependencyInjection();
 

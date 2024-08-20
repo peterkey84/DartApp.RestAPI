@@ -3,6 +3,8 @@ using DartsApp.RestAPI.DTOs.TournamentDto;
 using DartsApp.RestAPI.Entities;
 using DartsApp.RestAPI.Repositories.Interfaces;
 using DartsApp.RestAPI.Servicies.Interfaces;
+using DartsApp.RestAPI.Settings;
+using Microsoft.Extensions.Options;
 
 namespace DartsApp.RestAPI.Servicies.Infrastructure
 {
@@ -10,6 +12,8 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
     {
         private readonly IMapper _mapper;
         private readonly ITournamentRepository _tournamentRepository;
+
+
 
         public TournamentService(ITournamentRepository tournamentRepository, IMapper mapper) : base(tournamentRepository)
         {

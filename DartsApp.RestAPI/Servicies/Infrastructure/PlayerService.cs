@@ -3,6 +3,8 @@ using DartsApp.RestAPI.DTOs.PlayerDto;
 using DartsApp.RestAPI.Entities;
 using DartsApp.RestAPI.Repositories.Interfaces;
 using DartsApp.RestAPI.Servicies.Interfaces;
+using DartsApp.RestAPI.Settings;
+using Microsoft.Extensions.Options;
 
 namespace DartsApp.RestAPI.Servicies.Infrastructure
 {
@@ -10,13 +12,16 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
     {
         private readonly IPlayerRepository _playerRepository;
         private readonly IMapper _mapper;
+        private readonly PlayerSettings _playerSettings;
+        private readonly PlayerValidation _playerValidation;
 
-
-        public PlayerService(IPlayerRepository playerRepository, IMapper mapper) : base(playerRepository)
+        public PlayerService(IPlayerRepository playerRepository, IMapper mapper, IOptions<PlayerSettings> playerSettings, IOptions<PlayerValidation> playerValidation) : base(playerRepository)
         {
             
             _mapper = mapper;
             _playerRepository = playerRepository;
+            _playerSettings = playerSettings.Value;
+            _playerValidation = playerValidation.Value;
 
         }
 
@@ -45,6 +50,23 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
         {
 
             var player = _mapper.Map<Player>(playerDto);
+
+            var age = CalculateAge(playerDto.BirthdayDate);
+
+            if(age < _playerValidation.MinimumAge)
+            {
+                throw new Exception("Player is too young to register.");
+            }
+
+            player = new Player()
+            {
+                FirstName = playerDto.FirstName,
+                LastName = playerDto.LastName,
+                ContactEmail = playerDto.ContactEmail,
+                ContactNumber = playerDto.ContactNumber,
+                BirthdayDate = playerDto.BirthdayDate,
+                Ranking = _playerSettings.DefaultRanking
+            };
 
             await base.AddAsync(player);
 
@@ -153,6 +175,14 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
 
             return player;
 
+        }
+
+        private int CalculateAge(DateTime birthDate)
+        {
+            var today = DateTime.Today;
+            var age = today.Year - birthDate.Year;
+            if (birthDate.Date > today.AddYears(-age)) age--;
+            return age;
         }
 
     }

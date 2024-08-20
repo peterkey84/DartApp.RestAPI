@@ -3,6 +3,8 @@ using DartsApp.RestAPI.DTOs.BoardDto;
 using DartsApp.RestAPI.Entities;
 using DartsApp.RestAPI.Repositories.Interfaces;
 using DartsApp.RestAPI.Servicies.Interfaces;
+using DartsApp.RestAPI.Settings;
+using Microsoft.Extensions.Options;
 
 namespace DartsApp.RestAPI.Servicies.Infrastructure
 {
@@ -11,12 +13,15 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
         private readonly IMapper _mapper;
         private readonly IBoardRepository _boardRepository;
         private readonly ITournamentRepository _tournamentRepository;
-
-        public BoardService(IBaseRepository<Board> baseRepository, IMapper mapper, ITournamentRepository tournamentRepository, IBoardRepository boardRepository) : base(baseRepository)
+        private readonly BoardSettings _boardSettings;
+        private readonly BoardLimits _boardLimits;
+        public BoardService(IBaseRepository<Board> baseRepository, IMapper mapper, ITournamentRepository tournamentRepository, IBoardRepository boardRepository, IOptions<BoardSettings> boardSettings, IOptions<BoardLimits> boardLimits) : base(baseRepository)
         {
             _mapper = mapper;
             _tournamentRepository = tournamentRepository;
             _boardRepository = boardRepository;
+            _boardSettings = boardSettings.Value;
+            _boardLimits = boardLimits.Value;
         }
 
         public async Task<IEnumerable<BoardViewDto>> GetAllBoardsAsync()
@@ -44,9 +49,29 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
 
             var id = await _tournamentRepository.GetByIdAsync(boardDto.TournamentId);
 
-            if(id == null)
+            var tournament = await _tournamentRepository.GetAllWithBoardsAsync();
+
+            var tournamnetById = tournament.FirstOrDefault(t => t.Id == boardDto.TournamentId);
+
+            if (tournamnetById.Boards.Count >= _boardLimits.MaxBoardsPerTournament)
+            {
+                throw new Exception("Maximum number of boards for this tournament has been reached.");
+            }
+
+            if (id == null)
             {
                 throw new Exception();
+            }
+
+            if(boardDto.Type == "")
+            {
+                board = new Board()
+                {
+                    Brand = boardDto.Brand,
+                    Model = boardDto.Model,
+                    Type = _boardSettings.DefautlType,
+                    TournamentId = boardDto.TournamentId
+                };
             }
 
             await base.AddAsync(board);

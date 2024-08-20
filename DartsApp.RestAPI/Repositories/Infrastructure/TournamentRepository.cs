@@ -26,6 +26,12 @@ namespace DartsApp.RestAPI.Repositories.Infrastructure
             return matchedTournaments;
         }
 
+        public async Task<IEnumerable<Tournament>> GetAllWithBoardsAsync()
+        {  
+
+            return await _dbContext.Tournaments.Include(t => t.Boards).ToListAsync();
+        }
+
 
     }
 }
