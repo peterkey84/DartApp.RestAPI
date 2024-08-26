@@ -1,4 +1,5 @@
 ﻿using DartsApp.RestAPI.DTOs.PlayerDto;
+using DartsApp.RestAPI.DTOs.PlayerTournamentDto;
 using DartsApp.RestAPI.Entities;
 
 namespace DartsApp.RestAPI.Servicies.Interfaces
@@ -13,7 +14,7 @@ namespace DartsApp.RestAPI.Servicies.Interfaces
         Task<IEnumerable<PlayerRankingDto>> GetPlayersWithoutRankingPoints();
         Task<IEnumerable<PlayerRankingDto>> GetPlayersWithRankingPointsUnder200();
         string GetPlayerStatisticsByPlayerId(int id);
-
+        Task<PlayerTournamentDto> AddPlayerToTheTournamentAsync(int playerId, int tournamentId);
 
     }
 }

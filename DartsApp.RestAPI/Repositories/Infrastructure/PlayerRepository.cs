@@ -49,11 +49,49 @@ namespace DartsApp.RestAPI.Repositories.Infrastructure
 
             if (statisticOfPlayer == null)
             {
-                return "Statistics not found for this player.";
+                throw new Exception();
             }
 
             return statisticOfPlayer;
 
+        }
+
+        public int GetTournamentIdByPlayerId(int id)
+        {
+
+            IQueryable<int> tournamentId = _dbContext.PlayerTournaments.Where(p => p.PlayerId == id).Select(x => x.TournamentId);
+
+            var returnTournamentId = tournamentId.FirstOrDefault();
+
+            if(returnTournamentId == null)
+            {
+                throw new Exception();
+            }
+
+            return returnTournamentId;
+        }
+        public async Task AddPlayerTournamnetAsync(PlayerTournament playerTournamnet)
+        {
+            if (playerTournamnet != null)
+            {
+                await _dbContext.PlayerTournaments.AddAsync(playerTournamnet);
+                await _dbContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task<PlayerTournament> GetPlayerTournament(int playerId)
+        {
+            IQueryable<PlayerTournament> playerTournamentValues = _dbContext.PlayerTournaments.Where(p => p.PlayerId == playerId);
+
+            var playerTournament = playerTournamentValues.FirstOrDefault();
+
+            if(playerTournament == null)
+            {
+                throw new Exception();
+
+            }
+
+            return playerTournament;
         }
     }
 }

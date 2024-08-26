@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DartsApp.RestAPI.DTOs.PlayerDto;
+using DartsApp.RestAPI.DTOs.PlayerTournamentDto;
 using DartsApp.RestAPI.Entities;
 using DartsApp.RestAPI.Repositories.Interfaces;
 using DartsApp.RestAPI.Servicies.Interfaces;
@@ -14,14 +15,16 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
         private readonly IMapper _mapper;
         private readonly PlayerSettings _playerSettings;
         private readonly PlayerValidation _playerValidation;
+        private readonly ITournamentRepository _turnamentRepository;
 
-        public PlayerService(IPlayerRepository playerRepository, IMapper mapper, IOptions<PlayerSettings> playerSettings, IOptions<PlayerValidation> playerValidation) : base(playerRepository)
+        public PlayerService(IPlayerRepository playerRepository, IMapper mapper, IOptions<PlayerSettings> playerSettings, IOptions<PlayerValidation> playerValidation, ITournamentRepository turnamentRepository) : base(playerRepository)
         {
             
             _mapper = mapper;
             _playerRepository = playerRepository;
             _playerSettings = playerSettings.Value;
             _playerValidation = playerValidation.Value;
+            _turnamentRepository = turnamentRepository;
 
         }
 
@@ -70,7 +73,56 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
 
             await base.AddAsync(player);
 
+            var tournamnetId = _playerRepository.GetTournamentIdByPlayerId(player.Id);
+
+            var playerTournament = new PlayerTournament()
+            {
+                PlayerId = player.Id,
+                TournamentId = tournamnetId,
+                PlayerStatistics = _playerSettings.DefaultStatistics,
+                PlayerPoints = _playerSettings.DefaultPoints
+                
+            };
+
+            await _playerRepository.AddPlayerTournamnetAsync(playerTournament);
             return _mapper.Map<PlayerCreateDto>(await _playerRepository.GetByIdAsync(player.Id));
+
+        }
+
+        public async Task<PlayerTournamentDto> AddPlayerToTheTournamentAsync(int playerId, int tournamentId)
+        {
+
+            var playerTournamentFromSource = _playerRepository.GetPlayerTournament(playerId);
+
+            var playerTournament = new PlayerTournament();
+
+            if (playerTournamentFromSource.Result.PlayerStatistics != "" || playerTournamentFromSource.Result.PlayerPoints != 0)
+            {
+                playerTournament = new PlayerTournament()
+                {
+                    PlayerId = playerId,
+                    TournamentId = tournamentId,
+                    PlayerStatistics = playerTournamentFromSource.Result.PlayerStatistics,
+                    PlayerPoints = playerTournamentFromSource.Result.PlayerPoints
+
+                };
+            }
+            else
+            {
+                playerTournament = new PlayerTournament()
+                {
+                    PlayerId = playerId,
+                    TournamentId = tournamentId,
+                    PlayerStatistics = _playerSettings.DefaultStatistics,
+                    PlayerPoints = _playerSettings.DefaultPoints
+
+                };
+
+
+            }
+
+            await _playerRepository.AddPlayerTournamnetAsync(playerTournament);
+            return _mapper.Map<PlayerTournamentDto>(await _playerRepository.GetPlayerTournament(playerId));
 
         }
 

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DartsApp.RestAPI.DTOs.PlayerDto;
+using DartsApp.RestAPI.DTOs.PlayerTournamentDto;
 using DartsApp.RestAPI.Servicies.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -90,6 +91,14 @@ namespace DartsApp.RestAPI.Controllers
             string playerStatistic = _playerService.GetPlayerStatisticsByPlayerId(id);
 
             return playerStatistic;
+
+        }
+
+        [HttpPost("adding-to-the-tournament/{playerId}/{tournamentId}")]
+        public async Task<PlayerTournamentDto> AddPlayerToTheTournament(int playerId, int tournamentId)
+        {
+            return await _playerService.AddPlayerToTheTournamentAsync(playerId, tournamentId);
+
 
         }
     }
