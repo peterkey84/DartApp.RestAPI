@@ -38,7 +38,7 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
 
             if(place == null)
             {
-                throw new Exception();
+                throw new Exception($"Place does not exist!");
             }
 
             return _mapper.Map<PlaceViewDto>(place);
@@ -68,7 +68,7 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
 
             if(existingPlace == null)
             {
-                throw new Exception();
+                throw new Exception($"Place with this id {id} does not exist!");
             }
 
             bool hasChanges = false;

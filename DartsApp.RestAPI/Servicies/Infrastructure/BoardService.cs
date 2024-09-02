@@ -38,7 +38,7 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
             var board = await base.GetByIdAsync(id);
             if(board == null)
             {
-                throw new Exception();
+                throw new Exception($"Board with this id {id} does not exist!");
             }
 
             return _mapper.Map<BoardDto>(board);
@@ -60,7 +60,7 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
 
             if (id == null)
             {
-                throw new Exception();
+                throw new Exception($"Tournamnet with this id {id} does not exist!");
             }
 
             if(boardDto.Type == "")
@@ -87,7 +87,7 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
 
             if(existingBoard == null)
             {
-                throw new Exception();
+                throw new Exception($"Board with this id {id} does not exist!"));
             }
 
             bool hasChanges = false;

@@ -43,7 +43,7 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
             var player = await base.GetByIdAsync(id);
             if(player == null)
             {
-                throw new Exception();
+                throw new Exception($"Player with this id {id} does not exist!");
             }
 
             return _mapper.Map<PlayerViewDto>(player);
@@ -133,7 +133,7 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
 
             if (existingPlayer == null)
             {
-                throw new Exception();
+                throw new Exception($"Player with this id {id} does not exist!");
             }
 
             bool hasChanges = false;
@@ -222,7 +222,7 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
 
             if(player == null)
             {
-                throw new Exception();
+                throw new Exception($"Player does not exist!");
             }
 
             return player;

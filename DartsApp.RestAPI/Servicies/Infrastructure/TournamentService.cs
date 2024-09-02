@@ -31,7 +31,7 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
             var tournament = await _tournamentRepository.GetByIdAsync(id);
             if(tournament == null)
             {
-                throw new Exception();
+                throw new Exception($"Tournament with this id {id} does not exist!");
             }
 
             return _mapper.Map<TournamentViewDto>(tournament);
@@ -57,7 +57,7 @@ namespace DartsApp.RestAPI.Servicies.Infrastructure
 
             if (existingTournament == null)
             {
-                throw new Exception();
+                throw new Exception($"Tournament with this id {id} does not exist!");
             }
 
             bool hasChanges = false;
